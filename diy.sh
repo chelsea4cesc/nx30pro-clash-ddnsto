@@ -33,4 +33,3 @@ cat >> openwrt/feeds.conf.default <<'EOF'
 src-git openclash https://github.com/vernesong/OpenClash.git
 src-git ddnsto https://github.com/linkease/ddnsto-openwrt.git
 EOF
-

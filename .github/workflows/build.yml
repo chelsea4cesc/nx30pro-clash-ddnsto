@@ -23,8 +23,8 @@ jobs:
 
       - name: Clone source
         run: |
-          git clone --depth 1 -b openwrt-21.02 \
-            https://github.com/hanwckf/immortalwrt-mt798x.git openwrt
+          git clone --depth 1 -b openwrt-24.10 \
+            https://github.com/immortalwrt/immortalwrt.git openwrt
 
       - name: Apply 112M patch and feeds
         run: |
@@ -61,4 +61,3 @@ jobs:
             openwrt/bin/targets/mediatek/filogic/*factory.bin
             openwrt/bin/targets/mediatek/filogic/*sysupgrade.bin
           if-no-files-found: error
-

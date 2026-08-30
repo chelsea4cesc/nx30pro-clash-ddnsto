@@ -28,5 +28,4 @@ bin/targets/mediatek/filogic/
 
 - 第一次应从 U-Boot 或原厂恢复环境刷 `factory.bin`。
 - 刷之前确认已有原厂分区备份。
-- 本模板基于 `hanwckf/immortalwrt-mt798x` 的 `openwrt-21.02` 分支。
-
+- 本模板基于 `immortalwrt/immortalwrt` 的 `openwrt-24.10` 分支。
