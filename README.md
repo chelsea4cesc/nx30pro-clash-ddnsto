@@ -1,6 +1,6 @@
 # H3C Magic NX30 Pro 112M 大分区 ImmortalWrt 编译模板
 
-目标：把原厂 64M `ubi` 分区扩大到 112M，并将以下插件编进固件：
+目标：在 OpenWrt U-Boot 布局下把 `ubi` 分区从 64M 扩大到 112M，并将以下插件编进固件：
 
 - `luci-app-openclash`
 - `luci-app-ddnsto`
@@ -21,11 +21,10 @@ bin/targets/mediatek/filogic/
 
 其中：
 
-- `*h3c_magic-nx30-pro-nmbm-112m-squashfs-factory.bin` 用于首次刷入。
-- `*h3c_magic-nx30-pro-nmbm-112m-squashfs-sysupgrade.bin` 用于以后升级。
+- `*h3c_magic-nx30-pro-112m-squashfs-sysupgrade.itb` 用于在已刷 OpenWrt U-Boot 的机器上直接升级。
+- `*h3c_magic-nx30-pro-112m-initramfs-recovery.itb` 用于恢复环境。
 
 ## 刷入提醒
 
-- 第一次应从 U-Boot 或原厂恢复环境刷 `factory.bin`。
 - 刷之前确认已有原厂分区备份。
-- 本模板基于 `immortalwrt/immortalwrt` 的 `openwrt-24.10` 分支。
+- 本模板基于 `immortalwrt/immortalwrt` 的 `openwrt-24.10` 分支，不需要刷原厂 U-Boot。

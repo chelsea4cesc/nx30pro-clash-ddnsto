@@ -1,35 +1,40 @@
 #!/bin/sh
 set -e
 
-ZT229_DIR="/tmp/h3c_nx30pro_225m_dts"
-
-if [ ! -d "$ZT229_DIR" ]; then
-    git clone --depth 1 https://github.com/ZT229/H3C_NX30pro_225M_dts.git "$ZT229_DIR"
-fi
-
-cp -f "$ZT229_DIR/mt7981b-h3c-magic-nx30-pro-112m.dts" \
+cp -f dts/mt7981b-h3c-magic-nx30-pro-112m.dts \
     openwrt/target/linux/mediatek/dts/
 
-# 只追加 112m 设备定义，避免覆盖上游已有的 NMBM/stock 定义。
-awk '
-/^define Device\/h3c_magic-nx30-pro-nmbm-112m$/ {
-    print
-    capture = 1
-    next
-}
-capture {
-    print
-    if ($0 == "endef") {
-        exit
-    }
-}
-' "$ZT229_DIR/filogic.mk" >> openwrt/target/linux/mediatek/image/filogic.mk
+cat >> openwrt/target/linux/mediatek/image/filogic.mk <<'EOF'
 
-echo "TARGET_DEVICES += h3c_magic-nx30-pro-nmbm-112m" \
-    >> openwrt/target/linux/mediatek/image/filogic.mk
+define Device/h3c_magic-nx30-pro-112m
+  DEVICE_VENDOR := H3C
+  DEVICE_MODEL := Magic NX30 Pro
+  DEVICE_VARIANT := (112M OpenWrt U-Boot layout)
+  DEVICE_DTS := mt7981b-h3c-magic-nx30-pro-112m
+  DEVICE_DTS_DIR := ../dts
+  UBINIZE_OPTS := -E 5
+  BLOCKSIZE := 128k
+  PAGESIZE := 2048
+  KERNEL_IN_UBI := 1
+  UBOOTENV_IN_UBI := 1
+  IMAGE_SIZE := 110592k
+  IMAGES := sysupgrade.itb
+  KERNEL_INITRAMFS_SUFFIX := -recovery.itb
+  KERNEL := kernel-bin | gzip
+  KERNEL_INITRAMFS := kernel-bin | lzma | \
+        fit lzma $$(KDIR)/image-$$(firstword $$(DEVICE_DTS)).dtb with-initrd | pad-to 64k
+  IMAGE/sysupgrade.itb := append-kernel | \
+        fit gzip $$(KDIR)/image-$$(firstword $$(DEVICE_DTS)).dtb external-static-with-rootfs | append-metadata
+  DEVICE_PACKAGES := kmod-mt7915e kmod-mt7981-firmware mt7981-wo-firmware
+  ARTIFACTS := preloader.bin bl31-uboot.fip
+  ARTIFACT/preloader.bin := mt7981-bl2 spim-nand-ddr3
+  ARTIFACT/bl31-uboot.fip := mt7981-bl31-uboot h3c_magic-nx30-pro
+endef
+TARGET_DEVICES += h3c_magic-nx30-pro-112m
+EOF
 
-# 第三方插件源。
 cat >> openwrt/feeds.conf.default <<'EOF'
 src-git openclash https://github.com/vernesong/OpenClash.git
 src-git ddnsto https://github.com/linkease/ddnsto-openwrt.git
 EOF
+

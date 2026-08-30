@@ -58,6 +58,8 @@ jobs:
         with:
           name: nx30pro-112m-firmware
           path: |
-            openwrt/bin/targets/mediatek/filogic/*factory.bin
-            openwrt/bin/targets/mediatek/filogic/*sysupgrade.bin
+            openwrt/bin/targets/mediatek/filogic/*sysupgrade.itb
+            openwrt/bin/targets/mediatek/filogic/*recovery.itb
+            openwrt/bin/targets/mediatek/filogic/*preloader.bin
+            openwrt/bin/targets/mediatek/filogic/*bl31-uboot.fip
           if-no-files-found: error
