@@ -26,9 +26,6 @@ define Device/h3c_magic-nx30-pro-112m
   IMAGE/sysupgrade.itb := append-kernel | \
         fit gzip $$(KDIR)/image-$$(firstword $$(DEVICE_DTS)).dtb external-static-with-rootfs | append-metadata
   DEVICE_PACKAGES := kmod-mt7915e kmod-mt7981-firmware mt7981-wo-firmware
-  ARTIFACTS := preloader.bin bl31-uboot.fip
-  ARTIFACT/preloader.bin := mt7981-bl2 spim-nand-ddr3
-  ARTIFACT/bl31-uboot.fip := mt7981-bl31-uboot h3c_magic-nx30-pro
 endef
 TARGET_DEVICES += h3c_magic-nx30-pro-112m
 EOF
@@ -37,4 +34,3 @@ cat >> openwrt/feeds.conf.default <<'EOF'
 src-git openclash https://github.com/vernesong/OpenClash.git
 src-git ddnsto https://github.com/linkease/ddnsto-openwrt.git
 EOF
-
