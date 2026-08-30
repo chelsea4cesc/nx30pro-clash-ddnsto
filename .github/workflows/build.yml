@@ -46,7 +46,7 @@ jobs:
       - name: Download sources
         working-directory: openwrt
         run: |
-          make download -j"$(nproc)"
+          make download -j8
 
       - name: Compile
         working-directory: openwrt
